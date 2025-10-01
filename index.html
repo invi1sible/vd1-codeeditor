@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>vd1 editor</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+   
+   html, body {
+     height: 100%;    
+     margin: 0;
+    }
+    
+    #editor {
+      flex: 1;
+      width: 100%;
+    }
+    
+    #im {
+      height: 100px;
+      width: 100%;
+    }
+
+    #th {
+      width: 1210;
+      height: 100;
+      background-color: black;
+      
+    }
+    
+    #th {
+      width: 100%;
+      height: 100px;
+      background: url("https://uploads.onecompiler.io/43xpej4gb/43y4fckzs/animation%20thhe%20stark%20contrast%20between%20the%20vibrant%20blue%20lines.jpg")
+             center/cover no-repeat;
+             display: flex;
+             align-items: center;
+             padding: 1rem;
+    }
+
+
+
+    #th select.form-select {
+      background-color: #000;     
+      color: #fff;                 
+      border: 1px solid #444;      
+    }
+
+
+    #th select.form-select option {
+      background-color: #000;
+      color: #fff;
+    }
+ 
+ 
+    #th select.form-select:focus {
+      box-shadow: none;
+      border-color: #666;
+    }
+    
+  </style>
+</head>
+<body>
+  <div id="th" class="d-flex align-items-center p-3">
+  <div class="me-3">
+    <label for="themeSelect" class="form-label text-white mb-0 me-2"><i class="fa-brands fa-affiliatetheme">Editor Theme:</i></label>
+    <select class="form-select d-inline-block w-auto" id="themeSelect">
+      <option value="vs-light">Light</option>
+      <option value="vs-dark" selected>Dark</option>
+      <option value="hc-black">High Contrast</option>
+      <option value="dracula">Dracula</option>
+      <option value="solarized-light">Solarized Light</option>
+      <option value="solarized-dark">Solarized Dark</option>
+      <option value="github-dark">GitHub Dark</option>
+      <option value="monokai">Monokai</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="languageSelect" class="form-label text-white mb-0 me-2"><i class="fa-solid fa-language">Language:</i></label>
+    <select class="form-select d-inline-block w-auto" id="languageSelect">
+      <option value="python">Python</option>
+      <option value="html">HTML</option>
+      <option value="lua">Lua</option>
+      <option value="javascript">JavaScripT</option>
+      <option value="css">Css</option>
+      <option value="luau">LuaU</option>
+      <option value="php">Php</option>
+    </select>
+  </div>
+  <div class="ms-3">
+  <label for="bgSelect" class="form-label text-white mb-0 me-2"><i class="fa-solid fa-campground">Background:</i></label>
+  <select class="form-select d-inline-block w-auto" id="bgSelect">
+    <option value="i" selected>Blue theme</option>
+    <option value="none">None</option>
+    <option value="m">Black theme</option>
+    <option value="a">Red theme</option>
+    <option value="g">Purple theme</option>
+    <option value="e">White theme</option>
+    <option value="ii">Yellow theme</option>
+    <option value="mm">Orange theme</option>
+  </select>
+  </div>
+</div>
+
+
+  <div id="editor"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs/loader.min.js"></script>
+  <script>
+    require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.0/min/vs' } });
+    require(['vs/editor/editor.main'], function () {
+
+
+      monaco.editor.defineTheme('dracula', {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [
+          { token: '', background: '282a36', foreground: 'f8f8f2' },
+          { token: 'comment', foreground: '6272a4' },
+          { token: 'keyword', foreground: 'ff79c6' },
+          { token: 'string', foreground: 'f1fa8c' }
+        ],
+        colors: { 'editor.background': '#282a36' }
+      });
+
+      monaco.editor.defineTheme('solarized-light', {
+        base: 'vs',
+        inherit: true,
+        rules: [
+          { token: '', foreground: '586e75', background: 'fdf6e3' },
+          { token: 'comment', foreground: '93a1a1' },
+          { token: 'keyword', foreground: '859900' },
+          { token: 'string', foreground: '2aa198' }
+        ],
+        colors: { 'editor.background': '#fdf6e3' }
+      });
+
+      monaco.editor.defineTheme('solarized-dark', {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [
+          { token: '', foreground: '839496', background: '002b36' },
+          { token: 'comment', foreground: '586e75' },
+          { token: 'keyword', foreground: 'cb4b16' },
+          { token: 'string', foreground: '2aa198' }
+        ],
+        colors: { 'editor.background': '#002b36' }
+      });
+
+      monaco.editor.defineTheme('github-dark', {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [
+          { token: '', foreground: 'c9d1d9', background: '0d1117' },
+          { token: 'comment', foreground: '8b949e' },
+          { token: 'keyword', foreground: 'ff7b72' },
+          { token: 'string', foreground: 'a5d6ff' }
+        ],
+        colors: { 'editor.background': '#0d1117' }
+      });
+
+      monaco.editor.defineTheme('monokai', {
+        base: 'vs-dark',
+        inherit: true,
+        rules: [
+          { token: '', foreground: 'f8f8f2', background: '272822' },
+          { token: 'comment', foreground: '75715e' },
+          { token: 'keyword', foreground: 'f92672' },
+          { token: 'string', foreground: 'a6e22e' }
+        ],
+        colors: { 'editor.background': '#272822' }
+      });
+
+      const editor = monaco.editor.create(document.getElementById('editor'), {
+        value: "print('Hello, World!')",
+        language: 'python',
+        theme: 'vs-dark',
+        automaticLayout: true
+      });
+
+
+      document.getElementById('themeSelect').addEventListener('change', function () {
+        monaco.editor.setTheme(this.value);
+      });
+      
+      document.getElementById('languageSelect').addEventListener('change', function () {
+        const val = this.value;
+        if (val === 'luau') {
+          monaco.editor.setModelLanguage(editor.getModel(), 'lua');
+        } else {
+          monaco.editor.setModelLanguage(editor.getModel(), val);
+        }
+      });
+      
+      monaco.languages.registerCompletionItemProvider('lua', {
+  provideCompletionItems: function () {
+    return {
+      suggestions: [
+        {
+          label: 'wait()',
+          kind: monaco.languages.CompletionItemKind.Function,
+          insertText: 'wait()',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'wait(seconds) pauses the script for given seconds (approx). If no value, waits ~0.03 s and returns elapsed time.'
+        },
+        {
+          label: 'task',
+          kind: monaco.languages.CompletionItemKind.Function,
+          insertText: 'task',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'task is a library for scheduling code execution (like delays, spawning, and deferrals)'
+        },
+        {
+          label: 'print(...)',
+          kind: monaco.languages.CompletionItemKind.Function,
+          insertText: 'print(${1:})',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'print(...) outputs values to the Luau/Roblox console for debugging.'
+        },
+        {
+          label: 'function...',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'function()\n\t$0\nend',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'A function is a reusable block of code that can return a value.'
+        },
+        {
+          label: 'if...',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'if',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'if checks a condition and executes its block only when the condition is true; optional elseif and else handle other outcomes.'
+        },
+        {
+          label: 'then',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'then\n\t$0',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'then marks the start of the code block that runs when an if or elseif condition evaluates to true.'
+        },
+        {
+          label: 'local...',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'local',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'local declares a variable or function with scope limited to the current block or file, preventing it from affecting the global environment.'
+        },
+        {
+          label: 'while...',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'while',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'while repeatedly runs a block of code as long as its condition remains true.'
+        },
+        {
+          label: 'for...',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'for',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'for is used to repeat a block of code either a fixed number of times or by iterating over items in a collection.'
+        },
+        {
+          label: 'true',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'true',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'true represents a boolean value that indicates a condition is correct or valid.'
+        },
+        {
+          label: 'false',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'false',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'false represents a boolean value that indicates a condition is incorrect or not valid.'
+        },
+        {
+          label: 'and...',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'and',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'and is a logical operator that returns true only if both conditions are true.'
+        },
+        {
+          label: 'break',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'break',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'break immediately stops the nearest loop from continuing and exits it.'
+        },
+        {
+          label: 'in...',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'in',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'in → used in for-loops to iterate over values'
+        },
+        {
+          label: 'do',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'do\n\t$0',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'do → starts a code block that ends with end'
+        },
+        {
+          label: 'not...',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'not',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'not bro'
+        },
+        {
+          label: 'return',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'return',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'return → sends a value back from a function and ends it'
+        },
+        {
+          label: 'or...',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'or',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'or → a logical operator that is true if at least one condition is true'
+        },
+        {
+          label: 'else',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'else\n\t$0',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'else → runs code if all previous if/elseif conditions were false'
+        },
+        {
+          label: 'end',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'end',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'end closes a code block like function, if, or loop'
+        },
+        {
+          label: 'elseif',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'elseif',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'elseif → checks another condition if the previous if was false'
+        },
+        {
+          label: 'nil',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'nil',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'nil → represents no value or nothing'
+        },
+        {
+          label: 'until..',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'until',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'until → ends a repeat loop when the condition is true'
+        },
+        {
+          label: 'repeat...',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'repeat',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'repeat → runs code until the condition after until becomes true'
+        },
+        {
+          label: 'GetService',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'GetService',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: ''
+        },
+        {
+          label: 'GetPlayers',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'GetPlayers',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: ''
+        },
+        {
+          label: 'GetChildren',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'GetChildren',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: ''
+        },
+        {
+          label: 'ipairs(...)',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'ipairs()',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'ipairs → iterates over array elements in order (1, 2, 3 …) until nil'
+        },
+        {
+          label: 'pairs(...)',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'pairs()',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'pairs → iterates over all key–value pairs in a table'
+        },
+        {
+          label: 'Humanoid',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Humanoid',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: '.'
+        },
+        {
+          label: 'HumanoidRootPart',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'HumanoidRootPart',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: ''
+        },
+        {
+          label: 'Instance.new...',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Instance.new',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'Instance.new → creates a new Roblox object (instance) of a given class'
+        },
+        {
+          label: 'ScreenGui',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'ScreenGui',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: ''
+        },
+        {
+          label: 'workspace',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'workspace',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: 'In Luau, a workspace is the main 3D container that holds all physical parts, models, and scripts in the game world. It’s where everything visible and interactive exists.'
+        },
+        {
+          label: 'Vector3',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Vector3',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: ''
+        },
+        {
+          label: 'new',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'new',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: ''
+        },
+        {
+          label: 'GetDescendants',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'GetDescendants',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: ''
+        },
+        {
+          label: 'Draggable',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Draggable',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          detail: ''
+        },
+        {
+          label: 'Active',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Active',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'Players',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Players',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: 'Players is a service that contains all the player objects currently in the game. Each player who joins is added here, and leaves when they disconnect.'
+        },
+        {
+          label: 'CFrame',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'CFrame',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'spawn',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'spawn',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'ReplicatedStorage',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'ReplicatedStorage',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: 'ReplicatedStorage is a service used to store objects (like RemoteEvents, RemoteFunctions, or shared assets) that are accessible by both the server and all clients.'
+        },
+        {
+          label: 'UserInputService',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'UserInputService',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: 'UserInputService lets you detect and respond to player inputs across devices'
+        },
+        {
+          label: 'game',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'game',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'Transparency',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Transparency',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'Parent',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Parent',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: 'Parent shows or sets the container (Instance) that holds another object'
+        },
+        {
+          label: 'FindFirstChild',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'FindFirstChild',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'WaitForChild',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'WaitForChild',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'Material',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Material',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'PlayerAdded',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'PlayerAdded',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'string',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'string',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'Enum',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Enum',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'Destroy()',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Destroy()',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'HumanoidStateType',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'HumanoidStateType',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+        },
+        {
+          label: 'table',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'table',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'insert',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'insert',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'Connect',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Connect',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'Touched',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'Touched',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'TouchEnded',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'TouchEnded',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        },
+        {
+          label: 'LocalSimulationTouched',
+          kind: monaco.languages.CompletionItemKind.Keyword,
+          insertText: 'LocalSimulationTouched',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule,
+          detail: ''
+        }
+      ]
+    };
+  }
+});
+
+      (function () {
+  const customWords = new Set();
+  const builtIns = new Set([
+  'and','break','do','else','elseif','end',
+  'false','for','function','if','in','local',
+  'nil','not','or','repeat','return','then',
+  'true','until','while',
+  'print','wait',
+  'workspace','Players','ReplicatedStorage','RunService','UserInputService',
+  'Humanoid','HumanoidRootPart','ScreenGui','Instance','Parent',
+  'GetPlayers','GetChildren','GetService','Instance.new',
+  'task','task.wait','task.spawn','task.delay','task.defer','task.synchronize','task.desynchronize'
+]);
+
+
+  editor.onDidChangeModelContent(() => {
+    customWords.clear();
+
+    const text = editor.getValue();
+
+    const matches = text.match(/\b[a-zA-Z_][a-zA-Z0-9_]*\b/g) || [];
+
+    matches.forEach(word => {
+      if (word.length > 1 && !builtIns.has(word)) {
+        customWords.add(word);
+      }
+    });
+  });
+
+  monaco.languages.registerCompletionItemProvider('lua', {
+    provideCompletionItems: function () {
+      const suggestions = Array.from(customWords).map(w => ({
+        label: w,
+        kind: monaco.languages.CompletionItemKind.Text,
+        insertText: w,
+        detail: 'User word'
+      }));
+      return { suggestions };
+    }
+  });
+})();
+
+      monaco.languages.setLanguageConfiguration('lua', {
+        autoClosingPairs: [
+          { open: '(', close: ')' },
+          { open: '{', close: '}' },
+          { open: '[', close: ']' },
+          { open: '"', close: '"' },
+          { open: "'", close: "'" }
+          ],
+          indentationRules: {
+            increaseIndentPattern: /^\s*(function|if|for|while|repeat|do)\b.*$/,
+            decreaseIndentPattern: /^\s*(end|until)\b/
+          }
+      });
+      
+      monaco.languages.setLanguageConfiguration('lua', {
+  autoClosingPairs: [
+    { open: '(', close: ')' },
+    { open: '{', close: '}' },
+    { open: '[', close: ']' },
+    { open: '"', close: '"' },
+    { open: "'", close: "'" }
+  ],
+  indentationRules: {
+    increaseIndentPattern: /^\s*((local\s+)?function\b.*|do\b|then\b|repeat\b).*$/,
+    decreaseIndentPattern: /^\s*(end|until)\b/
+  },
+  onEnterRules: [
+    {
+      beforeText: /^\s*(?:local\s+function\b.*|function\b.*|do\b|then\b|repeat\b).*$/,
+      action: { indentAction: monaco.languages.IndentAction.Indent }
+    },
+    {
+      beforeText: /^\s*(?:else|elseif)\b.*$/,
+      action: { indentAction: monaco.languages.IndentAction.IndentOutdent }
+    }
+  ]
+});
+
+
+
+      
+      const thBar = document.getElementById('th');
+      document.getElementById('bgSelect').addEventListener('change', function () {
+        if (this.value === 'i') {
+          thBar.style.background =
+          'url("https://uploads.onecompiler.io/43xpej4gb/43y4fckzs/animation%20thhe%20stark%20contrast%20between%20the%20vibrant%20blue%20lines.jpg") center/cover no-repeat';
+        }
+        else if (this.value == 'none') {
+          thBar.style.background = '#000';
+        }
+        else if (this.value == 'm') {
+          thBar.style.background =
+          'url("https://uploads.onecompiler.io/43xpej4gb/43y4fckzs/7.jpg") center/cover no-repeat';
+        }
+        else if (this.value == 'a') {
+          thBar.style.background =
+          'url("https://uploads.onecompiler.io/43xpej4gb/43y4fckzs/%D8%AA%D9%86%D8%B2%D9%8A%D9%84%20(1).jpg") center/cover no-repeat';
+        }
+        else if (this.value == 'g') {
+          thBar.style.background =
+          'url("https://uploads.onecompiler.io/43xpej4gb/43y4fckzs/Purple%20Rain.jpg") center/cover no-repeat';
+        }
+        else if (this.value == 'e') {
+          thBar.style.background =
+          'url("https://uploads.onecompiler.io/43xpej4gb/43y4fckzs/%D8%AA%D9%86%D8%B2%D9%8A%D9%84%20(2).jpg") center/cover no-repeat';
+        }
+        else if (this.value == 'ii') {
+          thBar.style.background =
+          'url("https://uploads.onecompiler.io/43xpej4gb/43y4fckzs/%D8%AA%D9%86%D8%B2%D9%8A%D9%84%20(3).jpg") center/cover no-repeat';
+        }
+        else if (this.value == 'mm') {
+          thBar.style.background =
+          'url("https://uploads.onecompiler.io/43xpej4gb/43y4fckzs/Free%20%20Wallpaper,%20Copper,%20Textured%20Background%20Images,%20Copper%20Background%20Texture%20Photo%20Background%20PNG%20and%20Vectors.jpg") center/cover no-repeat';
+        }
+      });
+
+
+    });
+  </script>
+</body>
+</html> 
